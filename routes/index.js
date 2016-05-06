@@ -1,11 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var unirest = require('unirest');
-var key = process.env.NYT_API_KEY;
-
-
-
-
+var key = process.env.key;
 
 
 
@@ -13,26 +9,20 @@ var key = process.env.NYT_API_KEY;
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Click To See a List of the New York Times Best Sellers' });
 });
-
-router.get('/', function(req, res, next) {
-  res.send(result)
-})
-
-
-
-
-// var url = "https://api.nytimes.com/svc/books/v3/lists.json";
-// url += '?' + $.param({
-//   'api-key': "8042db3740c47e5db419e709e562c5a5:0:74024451",
-//   'list': "hardcover-fiction"
+//
+// router.get('/list', function (req, res, next) {
+//   unirest.get('http://api.nytimes.com/svc/books/v2/lists.json?list=hardcover-fiction')
+//     .end(function (results) {
+//   res.render('list', {books:results.body.books})
+//   })
 // });
-// $.ajax({
-//   url: url,
-//   method: 'GET',
-// }).done(function(result) {
-//   console.log(result);
-// }).fail(function(err) {
-//   throw err;
-// })
+
+router.get('/list', function (req, res, next) {
+  unirest.get('http://api.nytimes.com/svc/books/v2/lists.json?list=hardcover-fiction')
+    .end(function (response) {
+  res.send('list', {books: response.body.results})
+})
+});
+
 
 module.exports = router;
